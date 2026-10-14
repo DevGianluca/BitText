@@ -97,4 +97,5 @@ C:\Users\gianl\AppData\Local\Temp\BitText-build-hud\BlazorSample.deps.json
 C:\Users\gianl\AppData\Local\Temp\BitText-build-hud\BlazorSample.runtimeconfig.json
 C:\Users\gianl\AppData\Local\Temp\BitText-build-hud\BlazorSample.dll
 C:\Users\gianl\AppData\Local\Temp\BitText-build-hud\BlazorSample.pdb
-D:\Coisas_Git\BitText\BlazorSample\obj\Debug\net10.0\compressed\6lzbqj6mx9-{0}-nryjsx5mrw-nryjsx5mrw.gz
+D:\Coisas_Git\BitText\BlazorSample\obj\Debug\net10.0\BlazorSample.sourcelink.json
+D:\Coisas_Git\BitText\BlazorSample\obj\Debug\net10.0\compressed\6lzbqj6mx9-{0}-5k1cccr6je-5k1cccr6je.gz

@@ -3,7 +3,14 @@ html, body {
 }
 
 a, .btn-link {
-    color: #006bb7;
+    color: #00ff41;
+}
+
+.site-shell a:link,
+.site-shell a:visited,
+.site-shell a:hover,
+.site-shell a:active {
+    color: #00ff41;
 }
 
 .btn-primary {
