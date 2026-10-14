@@ -1,0 +1,463 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    font-family: "Cascadia Code", "Consolas", monospace;
+    background: #030805;
+    color: #86efac;
+  }
+
+  html,
+  body {
+    min-height: 100%;
+    margin: 0;
+    background: #030805;
+  }
+
+  body {
+    min-height: 100vh;
+  }
+
+  ::selection {
+    color: #030805;
+    background: #4ade80;
+  }
+}
+
+@layer components {
+  .site-shell {
+    min-height: 100vh;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 5rem);
+  }
+
+  .site-header {
+    display: flex;
+    min-height: 5.5rem;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(34 197 94 / 22%);
+  }
+
+  .site-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: #bbf7d0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-decoration: none;
+  }
+
+  .brand-mark {
+    color: #4ade80;
+    font-size: 1.25rem;
+    text-shadow: 0 0 14px rgb(74 222 128 / 55%);
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 4vw, 2.5rem);
+  }
+
+  .site-nav-link {
+    padding-block: 0.5rem;
+    color: #86efac;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: color 150ms ease, text-shadow 150ms ease;
+  }
+
+  .site-nav-link:hover,
+  .site-nav-link.active {
+    color: #dcfce7;
+    text-shadow: 0 0 12px rgb(74 222 128 / 55%);
+  }
+
+  .site-main {
+    display: flex;
+    min-height: calc(100vh - 5.5rem);
+    align-items: center;
+    justify-content: center;
+    padding-block: clamp(3rem, 9vh, 6rem);
+  }
+
+  .home-page {
+    position: relative;
+    display: grid;
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.55fr);
+    align-items: center;
+    gap: clamp(2rem, 8vw, 7rem);
+    overflow: hidden;
+  }
+
+  .home-copy {
+    position: relative;
+    z-index: 1;
+    max-width: 48rem;
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin: 0 0 1.4rem;
+    color: #4ade80;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+  }
+
+  .status-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0.75rem rgb(74 222 128 / 75%);
+  }
+
+  .home-page h1,
+  .game-heading h1 {
+    margin: 0;
+    color: #dcfce7;
+    font-size: clamp(2.5rem, 6vw, 5.25rem);
+    font-weight: 700;
+    letter-spacing: -0.065em;
+    line-height: 1.08;
+  }
+
+  .home-page h1 span,
+  .game-heading h1 span {
+    color: #4ade80;
+    text-shadow: 0 0 28px rgb(34 197 94 / 24%);
+  }
+
+  .home-description {
+    max-width: 39rem;
+    margin: 1.6rem 0 2rem;
+    color: #86efac;
+    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+    line-height: 1.9;
+  }
+
+  .primary-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid #22c55e;
+    padding: 0.9rem 1.1rem;
+    color: #bbf7d0;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: background-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .primary-link:hover {
+    background: rgb(34 197 94 / 10%);
+    box-shadow: 0 0 1.5rem rgb(34 197 94 / 15%);
+  }
+
+  .primary-link span {
+    color: #4ade80;
+  }
+
+  .home-decoration {
+    display: flex;
+    min-height: 19rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.25rem;
+    border-left: 1px solid rgb(34 197 94 / 20%);
+    padding-left: clamp(1.5rem, 5vw, 4rem);
+    color: rgb(74 222 128 / 44%);
+    font-size: clamp(0.85rem, 1.5vw, 1.15rem);
+    letter-spacing: 0.2em;
+    text-shadow: 0 0 14px rgb(34 197 94 / 24%);
+  }
+
+  .game-page {
+    width: 100%;
+    max-width: 58rem;
+  }
+
+  .game-heading {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .game-heading .eyebrow {
+    justify-content: center;
+    margin-bottom: 0.9rem;
+  }
+
+  .game-heading h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .game-heading > p:last-child {
+    margin: 0.9rem 0 0;
+    color: #86efac;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .game-screen {
+    display: flex;
+    min-height: clamp(22rem, 54vh, 34rem);
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgb(74 222 128 / 55%);
+    background:
+      radial-gradient(ellipse at center, rgb(20 83 45 / 17%), transparent 65%),
+      #030805;
+    box-shadow: 0 0 2.5rem rgb(34 197 94 / 9%), inset 0 0 2rem rgb(34 197 94 / 5%);
+  }
+
+  .screen-toolbar {
+    display: flex;
+    min-height: 2.8rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid rgb(34 197 94 / 22%);
+    padding-inline: clamp(0.9rem, 3vw, 1.5rem);
+    color: #4ade80;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+  }
+
+  .game-screen .game-action {
+    border: 1px solid currentColor;
+    background: transparent;
+    padding: 0.45rem 0.75rem;
+    font: inherit;
+    cursor: pointer;
+    transition: box-shadow 150ms ease, text-shadow 150ms ease;
+  }
+
+  .game-screen .game-action--exit {
+    color: #ff1744;
+  }
+
+  .game-screen .game-action--exit:hover {
+    box-shadow: 0 0 0.75rem rgb(255 23 68 / 70%), 0 0 1.5rem rgb(255 23 68 / 45%);
+    text-shadow: 0 0 0.65rem rgb(255 23 68 / 80%);
+  }
+
+  .game-screen .game-action--save-exit {
+    color: #ffe600;
+  }
+
+  .game-screen .game-action--save-exit:hover {
+    box-shadow: 0 0 0.75rem rgb(255 230 0 / 70%), 0 0 1.5rem rgb(255 230 0 / 45%);
+    text-shadow: 0 0 0.65rem rgb(255 230 0 / 80%);
+  }
+
+  .game-screen .game-action:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  .screen-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: #86efac;
+    font-size: 0.6rem;
+  }
+
+  .screen-indicator .status-dot {
+    width: 0.4rem;
+    height: 0.4rem;
+  }
+
+  .screen-placeholder {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+
+  .screen-prompt {
+    color: #4ade80;
+    font-size: clamp(2.5rem, 7vw, 4rem);
+    line-height: 1;
+    text-shadow: 0 0 25px rgb(74 222 128 / 45%);
+  }
+
+  .screen-placeholder p {
+    margin: 1.1rem 0 0.6rem;
+    color: #bbf7d0;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+  }
+
+  .screen-caption {
+    color: rgb(74 222 128 / 58%);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+  }
+
+  .game-controls {
+    display: flex;
+    width: min(100%, 24rem);
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    font-family: "Cascadia Code", "Consolas", monospace;
+  }
+
+  .game-letter {
+    color: #4ade80;
+    font-size: 2rem;
+    text-shadow: 0 0 18px rgb(74 222 128 / 45%);
+  }
+
+  .game-answer-input {
+    width: min(100%, 18rem);
+    border: 1px solid rgb(74 222 128 / 55%);
+    background: rgb(3 8 5 / 75%);
+    padding: 0.75rem 1rem;
+    color: #dcfce7;
+    font: inherit;
+    text-align: center;
+    letter-spacing: 0.12em;
+  }
+
+  .game-answer-input:focus-visible {
+    outline: 1px solid #4ade80;
+    box-shadow: 0 0 1rem rgb(74 222 128 / 25%);
+  }
+
+  .game-input-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .game-button {
+    display: inline-flex;
+    min-height: 3.25rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid currentColor;
+    background: transparent;
+    padding: 0.65rem 0.85rem;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .game-button--digit {
+    width: 3.25rem;
+    padding: 0;
+    color: #4ade80;
+  }
+
+  .game-button--digit:hover {
+    background: rgb(74 222 128 / 8%);
+    box-shadow: 0 0 1rem rgb(74 222 128 / 45%);
+  }
+
+  .game-button--remove {
+    color: #f87171;
+  }
+
+  .game-button--remove:hover {
+    background: rgb(248 113 113 / 8%);
+    box-shadow: 0 0 1rem rgb(248 113 113 / 45%);
+  }
+
+  .game-button:focus-visible,
+  .game-submit:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  .game-submit {
+    width: min(100%, 18rem);
+    min-height: 3.25rem;
+    border: 1px solid #22c55e;
+    background: #14532d;
+    padding: 0.75rem 1rem;
+    color: #bbf7d0;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .game-submit:hover {
+    background: #166534;
+    box-shadow: 0 0 1.25rem rgb(34 197 94 / 28%);
+  }
+
+  #blazor-error-ui {
+    position: fixed;
+    z-index: 1000;
+    right: 1rem;
+    bottom: 1rem;
+    display: none;
+    border: 1px solid #22c55e;
+    background: #030805;
+    padding: 1rem 2.5rem 1rem 1rem;
+    color: #86efac;
+  }
+
+  #blazor-error-ui .reload {
+    color: #4ade80;
+  }
+
+  #blazor-error-ui .dismiss {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    cursor: pointer;
+  }
+
+  #blazor-error-ui.blazor-error-boundary {
+    display: block;
+  }
+
+  @media (max-width: 640px) {
+    .site-header {
+      min-height: 4.5rem;
+    }
+
+    .site-main {
+      min-height: calc(100vh - 4.5rem);
+    }
+
+    .home-page {
+      grid-template-columns: 1fr;
+    }
+
+    .home-decoration {
+      min-height: auto;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 0.7rem 1.2rem;
+      border-top: 1px solid rgb(34 197 94 / 20%);
+      border-left: 0;
+      padding: 1.25rem 0 0;
+      font-size: 0.7rem;
+    }
+
+    .game-screen {
+      min-height: 22rem;
+    }
+  }
+}
