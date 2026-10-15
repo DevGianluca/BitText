@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="BitText.Api/BitText.Api.csproj" />
+  <Project Path="BlazorSample/BlazorSample.csproj" />
+</Solution>

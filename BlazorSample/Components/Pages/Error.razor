@@ -1,30 +1,29 @@
-﻿@page "/Error"
+@page "/Error"
 @using System.Diagnostics
 
-<PageTitle>Error</PageTitle>
+<PageTitle>ERRO CRÍTICO | BitText</PageTitle>
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
-
-@if (ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@RequestId</code>
+<section class="w-full max-w-3xl border border-[#00FF41] bg-black p-6 font-mono text-[#00FF41] shadow-[0_0_32px_rgba(0,255,65,0.35)] sm:p-10"
+         aria-labelledby="critical-error-title">
+    <p class="mb-6 text-sm uppercase tracking-[0.2em] text-[#00FF41]">BITTEXT // PROTOCOLO DE EMERGÊNCIA</p>
+    <p class="mb-2 text-sm text-[#00FF41]">&gt; system.connection --status</p>
+    <h1 id="critical-error-title" class="mb-6 text-3xl font-bold tracking-widest text-[#00FF41] drop-shadow-[0_0_16px_rgba(0,255,65,0.9)] sm:text-5xl">
+        ERRO CRÍTICO
+    </h1>
+    <p class="text-base leading-relaxed text-[#00FF41] sm:text-lg">
+        FALHA DE SISTEMA: Intervenção de Agente detectada. Conexão cortada para proteção.<span class="animate-pulse" aria-hidden="true">_</span>
     </p>
-}
+    @if (ShowRequestId)
+    {
+        <p class="mt-4 break-all text-xs text-[#00FF41]/70">TRACE_ID: @RequestId</p>
+    }
+    <a href="/"
+       class="mt-10 inline-flex border border-[#00FF41] bg-[#00FF41] px-5 py-3 font-mono text-sm font-bold tracking-widest text-black no-underline transition hover:bg-black hover:text-[#00FF41] hover:shadow-[0_0_18px_rgba(0,255,65,0.7)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00FF41]">
+        ACORDAR (Voltar ao Início)
+    </a>
+</section>
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
-
-@code{
+@code {
     [CascadingParameter]
     private HttpContext? HttpContext { get; set; }
 

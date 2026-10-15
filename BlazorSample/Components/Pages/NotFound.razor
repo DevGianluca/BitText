@@ -1,5 +1,20 @@
-﻿@page "/not-found"
+@page "/not-found"
 @layout MainLayout
 
-<h3>Not Found</h3>
-<p>Sorry, the content you are looking for does not exist.</p>
+<PageTitle>ERRO 404 | BitText</PageTitle>
+
+<section class="w-full max-w-3xl border border-[#00FF41] bg-black p-6 font-mono text-[#00FF41] shadow-[0_0_24px_rgba(0,255,65,0.2)] sm:p-10"
+         aria-labelledby="not-found-title">
+    <p class="mb-6 text-sm uppercase tracking-[0.2em] text-[#00FF41]">BITTEXT // BUSCA DE DIRETÓRIO</p>
+    <p class="mb-2 text-sm text-[#00FF41]">&gt; locate /matrix/construto</p>
+    <h1 id="not-found-title" class="mb-6 text-3xl font-bold tracking-widest text-[#00FF41] drop-shadow-[0_0_12px_rgba(0,255,65,0.7)] sm:text-5xl">
+        ERRO 404
+    </h1>
+    <p class="text-base leading-relaxed text-[#00FF41] sm:text-lg">
+        FALHA NA MATRIX: O construto que você procura não existe ou foi apagado<span class="animate-pulse" aria-hidden="true">_</span>
+    </p>
+    <a href="/"
+       class="mt-10 inline-flex border border-[#00FF41] bg-[#00FF41] px-5 py-3 font-mono text-sm font-bold tracking-widest text-black no-underline transition hover:bg-black hover:text-[#00FF41] hover:shadow-[0_0_18px_rgba(0,255,65,0.7)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00FF41]">
+        ACORDAR (Voltar ao Início)
+    </a>
+</section>

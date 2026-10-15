@@ -156,3 +156,102 @@
         opacity: 0;
     }
 }
+/* /Components/Pages/Game.razor.rz.scp.css */
+.time-setting[b-i2geilrxwk] {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-family: "Cascadia Code", Consolas, monospace;
+}
+
+.hud-infinity[b-i2geilrxwk] {
+    font-size: 1.875rem;
+    line-height: 1;
+}
+
+.time-setting__label[b-i2geilrxwk] {
+    color: #00FF41;
+    font-size: 0.875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.time-setting__input[b-i2geilrxwk] {
+    border: 1px solid #00FF41;
+    background: #000;
+    padding: 0.5rem 1rem;
+    color: #00FF41;
+    font: inherit;
+    font-size: 1.25rem;
+    outline: none;
+    transition: box-shadow 150ms ease, border-color 150ms ease;
+}
+
+.time-setting__input:focus-visible[b-i2geilrxwk] {
+    border-color: #00FF41;
+    box-shadow: 0 0 12px rgb(0 255 65 / 50%);
+}
+
+.time-setting__input:disabled[b-i2geilrxwk] {
+    cursor: not-allowed;
+}
+
+.unlimited-toggle[b-i2geilrxwk] {
+    position: relative;
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.75rem;
+    color: #00FF41;
+    font-family: "Cascadia Code", Consolas, monospace;
+    font-size: 1.125rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+}
+
+.unlimited-toggle__input[b-i2geilrxwk] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.unlimited-toggle__box[b-i2geilrxwk] {
+    display: inline-flex;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #00FF41;
+    background: #000;
+    transition: box-shadow 150ms ease;
+}
+
+.unlimited-toggle__box[b-i2geilrxwk]::after {
+    width: 0.65rem;
+    height: 0.65rem;
+    background: #00FF41;
+    content: "";
+    transform: scale(0);
+    transition: transform 150ms ease;
+}
+
+.unlimited-toggle__input:checked + .unlimited-toggle__box[b-i2geilrxwk] {
+    box-shadow: 0 0 10px rgb(0 255 65 / 80%);
+}
+
+.unlimited-toggle__input:checked + .unlimited-toggle__box[b-i2geilrxwk]::after {
+    transform: scale(1);
+}
+
+.unlimited-toggle__input:checked ~ .unlimited-toggle__text[b-i2geilrxwk] {
+    text-shadow: 0 0 8px rgb(0 255 65 / 80%);
+}
+
+.unlimited-toggle__input:focus-visible + .unlimited-toggle__box[b-i2geilrxwk] {
+    outline: 2px solid #00FF41;
+    outline-offset: 3px;
+}
