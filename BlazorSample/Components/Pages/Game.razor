@@ -1,6 +1,9 @@
 ﻿@page "/game"
+@using System.Reflection
 @rendermode InteractiveServer
+@inject HttpClient Http
 @inject IJSRuntime JSRuntime
+@implements IDisposable
 @implements IAsyncDisposable
 
 
@@ -10,7 +13,7 @@
     <div class="game-heading">
         <p class="eyebrow"><span class="status-dot"></span> ÁREA DE JOGO</p>
         <h1>Prepare-se para <span>jogar</span></h1>
-        <p>A tela do jogo ficará disponível aqui em breve.</p>
+        <p>Converta cada letra para binário e envie sua resposta.</p>
     </div>
 
     <div class="game-screen" role="region" aria-label="Tela do jogo">
@@ -31,6 +34,7 @@
         </div>
         <div class="screen-placeholder">
             @if (opcaoSelecionado == 0)
+            // tela onde se ira escolher entre jogar tutorial e configs
             {
                 <div class="flex flex-col items-center gap-4">
 
@@ -56,35 +60,45 @@
             //TUTORIAL
             else if (opcaoSelecionado == 1 || opcaoSelecionado == 2)
             {
+                //tela de jogo ou tutorial sendo tutorial 1 e jogo 2
 
-                
                 <div class="game-controls">
-                    @if (opcaoSelecionado == 2)
-                    {
-                        <div
-                            class="grid w-full grid-cols-3 items-baseline border-b border-[#00ff41]/30 pb-3 font-mono text-[#00ff41]">
-                            <div class="flex items-baseline justify-start gap-2 drop-shadow-[0_0_6px_rgba(0,255,65,0.7)]">
-                                <span class="text-base uppercase tracking-widest text-[#00ff41]">Tempo</span>
+                    <div class="game-hud @(opcaoSelecionado == 1 ? "game-hud--tutorial" : "")">
+                        @if (opcaoSelecionado == 2)
+                        {
+                            <div class="game-hud__item">
+                                <span class="game-hud__label">Tempo</span>
                                 @if (tempoIlimitado)
                                 {
-                                    <span class="hud-infinity text-3xl font-bold leading-none text-[#00FF41]">∞</span>
+                                    <span class="game-hud__value">∞</span>
                                 }
                                 else
                                 {
-                                    <span class="text-3xl font-bold leading-tight">@tempo</span>
+                                    <span class="game-hud__value">@tempo</span>
                                 }
                             </div>
-                            <div class="flex items-baseline justify-center gap-2 drop-shadow-[0_0_6px_rgba(0,255,65,0.7)]">
-                                <span class="text-base uppercase tracking-widest text-[#00ff41]">Pontos</span>
-                                <span class="text-4xl font-bold leading-tight">@pontos</span>
+
+                        }
+                        <div class="game-hud__item">
+                            <span class="game-hud__label">Pontos</span>
+                            <span class="game-hud__value">@pontos</span>
+                        </div>
+                        @if (opcaoSelecionado == 2)
+                        {
+                            <div class="game-hud__item">
+                                <span class="game-hud__label">Vidas</span>
+                                <span class="game-hud__value">@vidas</span>
                             </div>
-                            <div class="flex items-baseline justify-end gap-2 drop-shadow-[0_0_6px_rgba(0,255,65,0.7)]">
-                                <span class="text-lg uppercase tracking-widest text-[#00ff41]">Vidas</span>
-                                <span class="text-3xl font-bold leading-tight">@vidas</span>
-                            </div>
+                        }
+                    </div>
+                    <div class="game-letter">@letra</div>
+                    @if (mostrarErro)
+                    {
+                        <div class="game-feedback" role="alert" aria-live="assertive">
+                            Incorreto! O binário da letra <strong>@letraAnterior</strong> era
+                            <strong class="game-feedback__binary">@letraBinariaAnterior</strong>
                         </div>
                     }
-                    <div class="game-letter text-[clamp(8rem,30vw,18rem)] leading-none">@letra</div>
                     <input class="game-answer-input" type="text" id="resposta" name="resposta_jogo" @bind="respostaUsuario"
                            @onkeyup="VerificarEnter"
                            oninput="let v = this.value.replace(/[^01]/g, ''); this.value = v.length > 4 ? v.slice(0, 4) + '.' + v.slice(4, 8) : v;"
@@ -103,14 +117,14 @@
             else if (opcaoSelecionado == 3)
             {
                 <div class="flex flex-col gap-6 w-full max-w-xs mx-auto mt-8 font-mono text-[#00ff41]">
-    
+
                     <!-- Título da aba -->
                     <h2 class="text-2xl text-center font-bold text-[#00ff41] drop-shadow-[0_0_8px_rgba(0,255,65,0.7)] mb-4">
                         CONFIGURAÇÕES
                     </h2>
                     <div class="time-setting">
                         <label for="tempo" class="time-setting__label">Tempo (em segundos)</label>
-                        <input id="tempo" name="tempo" type="number" min="10" max="300" @bind="tempo"
+                        <input id="tempo" name="tempo" type="number" min="10" max="300" @bind="tempoConfigurado"
                                disabled="@tempoIlimitado" class="time-setting__input" />
                         <label class="unlimited-toggle">
                             <input type="checkbox" @bind="tempoIlimitado" class="unlimited-toggle__input" />
@@ -119,28 +133,335 @@
                         </label>
                     </div>
 
-                        <!-- Campo VIDAS -->
-                        <div class="flex flex-col">
-                            <label for="vidas" class="mb-2 text-sm uppercase tracking-widest text-[#00ff41]">Vidas
-                                Iniciais</label>
-                                <input id="vidas" name="vidas" type="number" min="1" max="10" @bind="vidas"
-                                       class="bg-black border border-[#00ff41] text-[#00ff41] text-xl px-4 py-2 outline-none focus:border-[#00ff41] focus:shadow-[0_0_12px_rgba(0,255,65,0.7)] transition-all" />
-                            </div>
+                    <!-- Campo VIDAS -->
+                    <div class="flex flex-col">
+                        <label for="vidas" class="mb-2 text-sm uppercase tracking-widest text-[#00ff41]">Vidas
+                            Iniciais</label>
+                            <input id="vidas" name="vidas" type="number" min="1" max="10" @bind="vidasConfiguradas"
+                                   class="bg-black border border-[#00ff41] text-[#00ff41] text-xl px-4 py-2 outline-none focus:border-[#00ff41] focus:shadow-[0_0_12px_rgba(0,255,65,0.7)] transition-all" />
                         </div>
-                
-                    }
+                    </div>
 
-                </div>
+                }
+
             </div>
-        </section>
+            @if (mostrarGameOver)
+            {
+                <div class="game-over-overlay" role="dialog" aria-modal="true" aria-labelledby="game-over-title">
+                    <div class="game-over-card">
+                        <p class="game-over-card__eyebrow">FIM DE JOGO</p>
+                        <h2 id="game-over-title">Você Perdeu</h2>
+                        <p class="game-over-card__detail">A última letra foi <strong>@letraAnterior</strong>.</p>
+                        <p class="game-over-card__detail">
+                            O binário correto era
+                            <strong class="game-over-card__binary">@letraBinariaAnterior</strong>
+                        </p>
+                        <button class="game-over-button" type="button" @onclick="() => selecionar(2)">
+                            Jogar Novamente
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
 
 @code {
-    private char letra = 'A';
+
+    private char letra;
+    private string letraBinaria = "";
     private int opcaoSelecionado = 0;
     private int pontos = 0;
     private bool tempoIlimitado = false;
     private int tempo = 60; // segundos 60 = 1min
+    private int tempoConfigurado = 60;
     private int vidas = 3;
+    private int vidasConfiguradas = 3;
+    private string respostaUsuario = "";
+    private bool mostrarGameOver = false;
+    private bool mostrarErro = false;
+    private char? letraAnterior;
+    private string? letraBinariaAnterior;
+
+    private Guid? ticketAtual;
+    private CancellationTokenSource? cronometroCancellation;
+    private Task? cronometroTask;
+    private bool disposed;
+
+
+
+
+    private async Task VerificarEnter(KeyboardEventArgs e)
+    {
+        // Se a tecla pressionada for o "Enter", dispara a lógica de envio
+        if (e.Key == "Enter")
+        {
+            await EnviarResposta();
+        }
+    }
+
+
+    private async Task IniciarJogo()
+    {
+        await PararCronometroAsync();
+        LimparEstadoDaPartida();
+        vidas = vidasConfiguradas;
+        tempo = tempoConfigurado;
+
+        if (opcaoSelecionado == 1)
+        {
+            letra = 'A';
+        }
+        else
+        {
+            ConfigJogadores config = new ConfigJogadores(tempoIlimitado ? null : tempoConfigurado)
+            {
+                Vidas = vidasConfiguradas
+            };
+            var resposta = await Http.PostAsJsonAsync("http://localhost:5286/Game/iniciar", config);
+            var dados = await resposta.Content.ReadFromJsonAsync<RetornoNovaLetra>();
+            if (dados != null)
+            {
+                ticketAtual = dados.Ticket;
+                letra = dados.LetraSorteada;
+
+                if (!tempoIlimitado)
+                {
+                    if (tempo <= 0)
+                    {
+                        EncerrarPartidaPorTempo();
+                    }
+                    else
+                    {
+                        IniciarCronometro();
+                    }
+                }
+            }
+        }
+    }
+
+    private void LimparEstadoDaPartida()
+    {
+        cronometroCancellation?.Cancel();
+        ticketAtual = null;
+        respostaUsuario = "";
+        pontos = 0;
+        mostrarErro = false;
+        mostrarGameOver = false;
+        letraAnterior = null;
+        letraBinariaAnterior = null;
+    }
+
+    private void IniciarCronometro()
+    {
+        var cancellation = new CancellationTokenSource();
+        cronometroCancellation = cancellation;
+        cronometroTask = ExecutarCronometroAsync(cancellation);
+    }
+
+    private void EncerrarPartidaPorTempo()
+    {
+        letraAnterior = letra;
+        letraBinaria = Convert.ToString(letra, 2).PadLeft(8, '0');
+        letraBinariaAnterior = letraBinaria.Insert(4, ".");
+        mostrarGameOver = true;
+        ticketAtual = null;
+    }
+
+    private async Task ExecutarCronometroAsync(CancellationTokenSource cancellation)
+    {
+        try
+        {
+            using var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+            while (await timer.WaitForNextTickAsync(cancellation.Token))
+            {
+                if (tempo > 0)
+                {
+                    tempo--;
+                }
+
+                if (tempo == 0)
+                {
+                    EncerrarPartidaPorTempo();
+                    cancellation.Cancel();
+                }
+
+                await InvokeAsync(StateHasChanged);
+
+                if (tempo == 0)
+                {
+                    break;
+                }
+            }
+        }
+        catch (OperationCanceledException) when (cancellation.IsCancellationRequested)
+        {
+        }
+        finally
+        {
+            if (ReferenceEquals(cronometroCancellation, cancellation))
+            {
+                cronometroCancellation = null;
+                cronometroTask = null;
+            }
+
+            cancellation.Dispose();
+        }
+    }
+
+    private async Task PararCronometroAsync()
+    {
+        var cancellation = cronometroCancellation;
+        var task = cronometroTask;
+        if (cancellation is null)
+        {
+            return;
+        }
+
+        cronometroCancellation = null;
+        cancellation.Cancel();
+
+        if (task is not null)
+        {
+            await task;
+        }
+    }
+
+    private async Task EnviarResposta()
+    {
+        mostrarErro = false;
+        letraAnterior = letra;
+        string respostaLimpa = respostaUsuario.Trim().Replace(".", "");
+        if (opcaoSelecionado == 1)
+        {
+            letraBinaria = Convert.ToString(letra, 2).PadLeft(8, '0');
+            letraBinariaAnterior = letraBinaria.Insert(4, ".");
+
+            if (respostaLimpa == letraBinaria)
+            {
+                pontos++;
+                letra++;
+                mostrarErro = false;
+            }
+            else
+            {
+                mostrarErro = true;
+            }
+
+        }
+        else
+        {
+            if (ticketAtual is not Guid ticket)
+            {
+                return;
+            }
+
+            RespostaJogador jogador = new RespostaJogador();
+            jogador.InputJogador = respostaLimpa;
+            jogador.Ticket = ticket;
+
+            var resposta = await Http.PostAsJsonAsync("http://localhost:5286/Game/validar", jogador);
+            var dados = await resposta.Content.ReadFromJsonAsync<RespostaCorreta>();
+            if (dados != null)
+            {
+
+                if (!dados.Acertou)
+                {
+                    string? binarioCorreto = dados.LetraBinarioCorreta;
+                    letraBinariaAnterior = binarioCorreto is { Length: >= 8 }
+                        ? binarioCorreto.Insert(4, ".")
+                        : binarioCorreto;
+                    if (dados.GameOver)
+                    {
+                        // aparecer tela de gameOVer com a letra que estava nessa rodada + a resposta correta em binario dessa letra
+                        mostrarGameOver = true;
+                        ticketAtual = null;
+                        await PararCronometroAsync();
+                    }
+
+                    mostrarErro = true;
+                }
+                else
+                {
+
+                }
+                vidas = dados.VidasRestantes;
+                pontos = dados.PontuacaoAtual;
+                if (dados.ProximaLetra != null) letra = dados.ProximaLetra.Value;
+
+            }
+        }
+
+
+        respostaUsuario = "";
+        await InvokeAsync(StateHasChanged);
+    }
+
+
+    //faz com que a saiba qual opção pe escolhida
+    private async Task selecionar(int opcao)
+    {
+        if (opcao is not 1 and not 2)
+        {
+            await PararCronometroAsync();
+            ticketAtual = null;
+        }
+
+        letraAnterior = null;
+        letraBinariaAnterior = null;
+        mostrarGameOver = false;
+        mostrarErro = false;
+        respostaUsuario = "";
+        opcaoSelecionado = opcao;
+        scrollToGameControls = opcao is 1 or 2;
+
+        if (opcao == 1 || opcao == 2)
+        {
+            await IniciarJogo();
+            if (vidas <= 0)
+            {
+                vidas = 3;
+            }
+        }
+
+
+    }
+
+    // remove as letras pelo botão
+    private void remover()
+    {
+        if (string.IsNullOrEmpty(respostaUsuario)) return;
+        string numerosApenas = respostaUsuario.Replace(".", "");
+
+        numerosApenas = numerosApenas.Remove(numerosApenas.Length - 1, 1);
+        if (numerosApenas.Length > 4)
+        {
+            respostaUsuario = numerosApenas.Substring(0, 4) + "." + numerosApenas.Substring(4);
+        }
+        else
+        {
+            respostaUsuario = numerosApenas;
+        }
+    }
+
+    private void addZero() => AdicionarNumero('0'); //adiciona 0 com o botão
+    private void addUm() => AdicionarNumero('1'); // adiciona 1 Mesma coisa
+
+    private void AdicionarNumero(char numero)
+    {
+        string numerosApenas = respostaUsuario.Replace(".", "");
+        if (numerosApenas.Length >= 8) return;
+        numerosApenas += numero;
+        if (numerosApenas.Length > 4)
+        {
+            respostaUsuario = numerosApenas.Substring(0, 4) + "." + numerosApenas.Substring(4);
+        }
+        else
+        {
+            respostaUsuario = numerosApenas;
+        }
+    }
+
+    // aqui faz o site descer um pouco e deixar a tela em uma posição melhor
     private IJSObjectReference? gameModule;
     private bool scrollToGameControls;
 
@@ -158,66 +479,22 @@
 
     public async ValueTask DisposeAsync()
     {
+        Dispose();
         if (gameModule is not null)
         {
             await gameModule.DisposeAsync();
         }
     }
 
-    private string respostaUsuario = "";
-    private void VerificarEnter(KeyboardEventArgs e)
+    public void Dispose()
     {
-        // Se a tecla pressionada for o "Enter", dispara a lógica de envio
-        if (e.Key == "Enter")
+        if (disposed)
         {
-            EnviarResposta();
+            return;
         }
-    }
 
-    private void EnviarResposta()
-    {
-        // A sua lógica de verificação se o binário está certo entra aqui
-        respostaUsuario = "";
-    }
-
-
-    private void selecionar(int opcao)
-    {
-        opcaoSelecionado = opcao;
-        scrollToGameControls = opcao is 1 or 2;
-    }
-    private void remover()
-    {
-        if (string.IsNullOrEmpty(respostaUsuario)) return;
-        string numerosApenas = respostaUsuario.Replace(".", "");
-
-        numerosApenas = numerosApenas.Remove(numerosApenas.Length - 1, 1);
-        if (numerosApenas.Length > 4)
-        {
-            respostaUsuario = numerosApenas.Substring(0, 4) + "." + numerosApenas.Substring(4);
-        }
-        else
-        {
-            respostaUsuario = numerosApenas;
-        }
-    }
-
-    private void addZero() => AdicionarNumero('0');
-    private void addUm() => AdicionarNumero('1');
-    
-    private void AdicionarNumero(char numero)
-    {
-        string numerosApenas = respostaUsuario.Replace(".", "");
-        if (numerosApenas.Length >= 8) return;
-        numerosApenas += numero;
-        if (numerosApenas.Length > 4)
-        {
-            respostaUsuario = numerosApenas.Substring(0, 4) + "." + numerosApenas.Substring(4);
-        }
-        else
-        {
-            respostaUsuario = numerosApenas;
-        }
+        disposed = true;
+        cronometroCancellation?.Cancel();
     }
 
 }

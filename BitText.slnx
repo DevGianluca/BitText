@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="BitText.Api/BitText.Api.csproj" />
+  <Project Path="BitText.Shared/BitText.Shared.csproj" />
   <Project Path="BlazorSample/BlazorSample.csproj" />
 </Solution>

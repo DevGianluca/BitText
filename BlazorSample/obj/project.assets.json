@@ -11,6 +11,16 @@
         "buildMultiTargeting": {
           "buildMultiTargeting/Microsoft.AspNetCore.App.Internal.Assets.targets": {}
         }
+      },
+      "BitText.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/BitText.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BitText.Shared.dll": {}
+        }
       }
     }
   },
@@ -37,10 +47,16 @@
         "microsoft.aspnetcore.app.internal.assets.10.0.8.nupkg.sha512",
         "microsoft.aspnetcore.app.internal.assets.nuspec"
       ]
+    },
+    "BitText.Shared/1.0.0": {
+      "type": "project",
+      "path": "../BitText.Shared/BitText.Shared.csproj",
+      "msbuildProject": "../BitText.Shared/BitText.Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "BitText.Shared >= 1.0.0",
       "Microsoft.AspNetCore.App.Internal.Assets >= 10.0.8"
     ]
   },
@@ -69,7 +85,11 @@
         "net10.0": {
           "framework": "net10.0",
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Coisas_Git\\BitText\\BitText.Shared\\BitText.Shared.csproj": {
+              "projectPath": "D:\\Coisas_Git\\BitText\\BitText.Shared\\BitText.Shared.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

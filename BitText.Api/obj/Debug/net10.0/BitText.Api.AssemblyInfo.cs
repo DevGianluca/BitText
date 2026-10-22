@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BitText.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e0c93df972df5fde2d1c163e24b2d849774e0bcd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4b5a2f84a3500043979670defa07d892a6b00c3e")]
 [assembly: System.Reflection.AssemblyProductAttribute("BitText.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BitText.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
