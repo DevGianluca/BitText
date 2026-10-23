@@ -1,15 +1,14 @@
-# Etapa 1: Compilação com Node.js para o Tailwind
+# Etapa 1: Fábrica com Node.js
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-# Instala o Node.js e o npm
-RUN apt-get update && apt-get install -y nodejs npm
+# Instalação do Node.js e npm para processar o Tailwind CSS
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y nodejs npm
 
-# Copia tudo e compila apontando para o nome antigo
 COPY . .
 RUN dotnet publish BlazorSample/BlazorSample.csproj -c Release -o /app
 
-# Etapa 2: Execução leve
+# Etapa 2: Servidor Leve
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=build /app .

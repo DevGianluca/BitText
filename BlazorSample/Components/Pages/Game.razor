@@ -217,7 +217,7 @@
             {
                 Vidas = vidasConfiguradas
             };
-            var resposta = await Http.PostAsJsonAsync("http://localhost:5286/Game/iniciar", config);
+            var resposta = await Http.PostAsJsonAsync("http://api:8080/Game/iniciar", config);
             var dados = await resposta.Content.ReadFromJsonAsync<RetornoNovaLetra>();
             if (dados != null)
             {
@@ -359,7 +359,7 @@
             jogador.InputJogador = respostaLimpa;
             jogador.Ticket = ticket;
 
-            var resposta = await Http.PostAsJsonAsync("http://localhost:5286/Game/validar", jogador);
+            var resposta = await Http.PostAsJsonAsync("http://api:8080/Game/validar", jogador);
             var dados = await resposta.Content.ReadFromJsonAsync<RespostaCorreta>();
             if (dados != null)
             {
