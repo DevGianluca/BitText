@@ -1,3 +1,0 @@
-npx @tailwindcss/cli -i ./Style/app.css -o ./wwwroot/css/tailwind.css --watch
-dotnet watch
-dotnet run
