@@ -343,7 +343,9 @@
             if (respostaLimpa == letraBinaria)
             {
                 pontos++;
-                letra++;
+                if(letra == 'Z') letra = 'A';
+                else letra++;
+                
                 mostrarErro = false;
             }
             else
