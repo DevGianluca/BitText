@@ -28,4 +28,6 @@ O projeto está totalmente conteinerizado. Com o Docker Desktop instalado, siga 
 docker compose up --build
 ```
 4. Para acessar o site, vá para [http://localhost:5001](http://localhost:5001) e, para ver o funcionamento da API, acesse [http://localhost:5000](http://localhost:5000)
+
+
 🎥 Confira o vídeo completo de demonstração e o post de lançamento no LinkedIn: [Clique aqui](https://www.linkedin.com/feed/update/urn:li:activity:7520920242160549888/)
